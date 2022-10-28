@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db:
+    image: "postgres:13"
+    container_name: "my_postgres"
+    environment:
+      POSTGRES_PASSWORD: "my_password"
+    ports:
+      - "54320:5432"
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+  cassandra:
+    image: docker.io/bitnami/cassandra:4.0
+    ports:
+      - "7000:7000"
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/bitnami
+    environment:
+      CASSANDRA_SEEDS: "cassandra"
+      CASSANDRA_PASSWORD_SEEDER: "yes"
+      CASSANDRA_PASSWORD: "cassandra"
+volumes:
+  my_dbdata:
+  cassandra_data:
+    driver: local

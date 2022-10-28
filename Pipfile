@@ -1,0 +1,10 @@
+[packages]
+psycopg2-binary = "~=2.9.5"
+pandas = "~=1.5.1"
+sqlalchemy = "~=1.4.42"
+cassandra-driver = "~=3.25.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
