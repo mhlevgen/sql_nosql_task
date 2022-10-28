@@ -19,7 +19,7 @@ session.execute("""create keyspace mykeyspace with replication={
 session = clstr.connect('mykeyspace')
 
 
-def insert_pg(*, path_to_table: str, engine: sqlalchemy.engine):
+def insert_pg(*, path_to_table: str, engine: sqlalchemy.engine) -> None:
     conn = engine.connect()
     data = pd.read_csv(path_to_table, sep='\t')
     data.columns = [i.lower() for i in data.columns]
@@ -27,7 +27,7 @@ def insert_pg(*, path_to_table: str, engine: sqlalchemy.engine):
     conn.close()
 
 
-def select_pg(*, query: str, engine: sqlalchemy.engine, column_names: list[str]):
+def select_pg(*, query: str, engine: sqlalchemy.engine, column_names: list[str]) -> pd.DataFrame:
     with engine.connect() as conn:
         result = conn.execute(query).fetchall()
 
@@ -35,11 +35,16 @@ def select_pg(*, query: str, engine: sqlalchemy.engine, column_names: list[str])
     return data
 
 
-def create_table_cassandra(*, query: str, session: cassandra.cluster.Session):
+def create_table_cassandra(*, query: str, session: cassandra.cluster.Session) -> None:
     session.execute(query)
 
 
-def insert_cassandra(*, df: pd.DataFrame, cassandra_table: str, cassandra_colums: list[str]):
+def insert_cassandra(
+        *,
+        df: pd.DataFrame,
+        cassandra_table: str,
+        cassandra_colums: list[str],
+) -> None:
     stmt = session.prepare(f"""
     INSERT
     INTO
